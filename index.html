@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Leaflet Heatmap (DEMO)!</title>
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin=""/>
+
+        <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+        integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+        crossorigin=""></script>      
+        
+        <!-- The Leaflet heatmap plugin library file, stored in the same folder as the html-->
+        <script src="leaflet.heat.js"></script>
+        
+        <!-- Also reference JQuery for reading the geojson (point layer) -->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> 
+        
+        <style type="text/css">
+          html, body { margin: 0; padding: 0; height: 100%; }
+          #map { min-height: 100%; }
+        </style>
+
+    </head>
+
+    <body>
+        <div id="map"></div>
+
+        <script type="text/javascript">
+
+          var map = L.map('map', {
+              center: [41.8392524,-87.641779],
+              zoom: 11
+          });
+
+         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+          attribution: 'Animated path made with <a href="https://d3js.org/">D3</a>, Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
+          maxZoom: 15,
+          minZoom: 10,
+          id: 'mapbox.satellite',
+          accessToken: 'pk.eyJ1IjoiY3VyZW1hbmdvIiwiYSI6ImNpcTQ4cGFwbDAxbmVmd25vZGNiOTVzeGEifQ.GWZByYkIft6eMRha69C8nw'
+        }).addTo(map);
+        
+        // Read in the point layer as geojson;
+        // Process the data to the structure as required by the heatmap plugin    
+        $.getJSON("robbery.geojson",function(data){                     
+            // The Leaflet heatmap plugin wants an array of each location
+            // in the form of [lat, lng, intensity], // lat, lng, intensity
+            var locations = data.features.map(function(robbery) {
+                  var location = robbery.geometry.coordinates.reverse();
+                  location.push(1); //add intensity of each point location, range between 0.0 and 1.0
+                  return location; 
+            });
+            
+            // Use L.heatLayer() method to create the heatmap from points
+            // Some example options for customizing the heatmap are shown below
+            // For more, check out: https://github.com/Leaflet/Leaflet.heat#lheatlayerlatlngs-options
+            var heat = L.heatLayer(locations, { 
+                        radius: 25, // radius of each "point" of the heatmap, 25 by default
+                        gradient: {0.1: 'blue', 0.5: '#ffffbf', 1: '#a50f15'} // color scheme for displaying the heatmap
+                        });                     
+            map.addLayer(heat);
+          });
+
+        </script>
+   </body>
+</html>
