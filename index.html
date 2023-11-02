@@ -44,11 +44,11 @@
         
         // Read in the point layer as geojson;
         // Process the data to the structure as required by the heatmap plugin    
-        $.getJSON("seals.geojson",function(data){                     
+        $.getJSON("earthquakes.geojson",function(data){                     
             // The Leaflet heatmap plugin wants an array of each location
             // in the form of [lat, lng, intensity], // lat, lng, intensity
-            var locations = data.features.map(function(SUBSTRATE) {
-                  var location = SUBSTRATE.geometry.coordinates.reverse();
+            var locations = data.features.map(function(earthquakes) {
+                  var location = earthquakes.geometry.coordinates.reverse();
                   location.push(1); //add intensity of each point location, range between 0.0 and 1.0
                   return location; 
             });
