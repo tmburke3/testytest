@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Leaflet Heatmap (DEMO #2)!</title>
+        <title>Leaflet Heatmap (DEMO part 2)!</title>
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
         integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
@@ -30,25 +30,25 @@
         <script type="text/javascript">
 
           var map = L.map('map', {
-              center: [36.8524011,-129.3515986],
-              zoom: 11
+			center: [36.850828638192, -119.39910093891694],
+			zoom: 11
           });
 
          L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
           attribution: 'Animated path made with <a href="https://d3js.org/">D3</a>, Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
-          maxZoom: 15,
-          minZoom: 10,
+          maxZoom: 18,
+          minZoom: 8,
           id: 'mapbox.satellite',
           accessToken: 'pk.eyJ1IjoiY3VyZW1hbmdvIiwiYSI6ImNpcTQ4cGFwbDAxbmVmd25vZGNiOTVzeGEifQ.GWZByYkIft6eMRha69C8nw'
         }).addTo(map);
         
         // Read in the point layer as geojson;
         // Process the data to the structure as required by the heatmap plugin    
-        $.getJSON("earthquakes.geojson",function(data){                     
+        $.getJSON("robbery.geojson",function(data){                     
             // The Leaflet heatmap plugin wants an array of each location
             // in the form of [lat, lng, intensity], // lat, lng, intensity
-            var locations = data.features.map(function(magnitude) {
-                  var location = magnitude.geometry.coordinates.reverse();
+            var locations = data.features.map(function(robbery) {
+                  var location = robbery.geometry.coordinates.reverse();
                   location.push(1); //add intensity of each point location, range between 0.0 and 1.0
                   return location; 
             });
