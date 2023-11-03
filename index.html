@@ -58,8 +58,8 @@
             // Some example options for customizing the heatmap are shown below
             // For more, check out: https://github.com/Leaflet/Leaflet.heat#lheatlayerlatlngs-options
             var heat = L.heatLayer(locations, { 
-                        radius: 50, // radius of each "point" of the heatmap, 25 by default
-                        gradient: {1: 'blue', 1: 'lime', 1: 'red'} // color scheme for displaying the heatmap
+                        radius: 25, // radius of each "point" of the heatmap, 25 by default
+                        gradient: {0.2: 'blue', 0.8: 'lime', 1: 'red'} // color scheme for displaying the heatmap
                         });                     
             map.addLayer(heat);
           });
